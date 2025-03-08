@@ -14,7 +14,7 @@ import { getBlogDetails } from '../actions/blogActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
-const BlogViewScreen = () => {
+const AdminBlogScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -86,7 +86,7 @@ const BlogViewScreen = () => {
               <Button
                 mt={4}
                 colorScheme="brandRed"
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/blogs')}
               >
                 Back to Blogs
               </Button>
@@ -98,4 +98,4 @@ const BlogViewScreen = () => {
   );
 };
 
-export default BlogViewScreen;
+export default AdminBlogScreen;

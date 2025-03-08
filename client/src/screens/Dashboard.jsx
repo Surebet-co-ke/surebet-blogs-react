@@ -36,7 +36,7 @@ const Dashboard = () => {
         {/* Header */}
         <Flex justifyContent="space-between" alignItems="center" mb={4}>
           <Text fontSize="xl" fontWeight="bold">
-            Welcome to  Laki
+            Welcome 
           </Text>
         </Flex>
         <Flex flexWrap="wrap" justify="space-around">

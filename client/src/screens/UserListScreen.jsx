@@ -237,7 +237,7 @@ const UserListScreen = () => {
             px="5"
             py="5"
             overflowX="auto"
-            maxW="1000px"
+            maxW="98%"
           >
             <Table variant="simple" colorScheme="blue" size="sm">
               <Thead>

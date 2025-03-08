@@ -27,7 +27,7 @@ const RegisterScreen = () => {
 	const navigate = useNavigate();
 
 	let [searchParams] = useSearchParams();
-	let redirect = searchParams.get('redirect') || '/home';
+	let redirect = searchParams.get('redirect') || '/blogs';
 	
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
@@ -60,7 +60,7 @@ const RegisterScreen = () => {
 				password,
 			  )
 			);
-			navigate('/home');
+			navigate('/blogs');
 		  } catch (error) {
 			setMessage('Registration failed. Please try again.');
 			console.error('Registration Error:', error);

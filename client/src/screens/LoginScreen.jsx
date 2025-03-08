@@ -27,19 +27,25 @@ const LoginScreen = () => {
 	const navigate = useNavigate();
 
 	const [searchParam] = useSearchParams();
-	let redirect = searchParam.get('redirect') || '/home';
+	let redirect = searchParam.get('redirect') || '/blogs';
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
 	const userLogin = useSelector((state) => state.userLogin);
-	const { loading, error, userInfo } = userLogin;
+    const { loading, error, userInfo } = userLogin;
 
-	useEffect(() => {
-		if (userInfo) {
-			navigate(redirect);
-		}
-	}, [navigate, userInfo, redirect]);
+    useEffect(() => {
+        if (userInfo) {
+            const role = userInfo.role;
+
+            if (role === 'user') {
+                navigate('/blogs');
+            } else if (role === 'admin') {
+                navigate('/admin-home');
+            }
+        }
+    }, [navigate, userInfo, redirect]);
 
 	const submitHandler = (e) => {
 		e.preventDefault();

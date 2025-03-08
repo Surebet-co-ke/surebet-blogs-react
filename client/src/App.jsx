@@ -11,7 +11,10 @@ import AllBlogsScreen from './screens/AllBlogsScreen.jsx';
 import BlogViewScreen from './screens/BlogViewScreen.jsx';
 
 import Dashboard from './screens/Dashboard';
+import AdminBlogsScreen from './screens/AdminBlogsScreen.jsx';
+import AdminBlogScreen from './screens/AdminBlogScreen.jsx';
 import BlogListScreen from './screens/BlogListsScreen';
+import ProfileScreen from './screens/ProfileScreen.jsx';
 import UserListScreen from './screens/UserListScreen';
 
 
@@ -20,12 +23,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Non-dashboard routes */}
-        
+
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/register" element={<RegisterScreen />} />
-          
-        <Route path="/" element={<AllBlogsScreen/>} />
-          <Route path="/blog/:id"  element={<BlogViewScreen/>} />
+
+        <Route path="/" element={<AllBlogsScreen />} />
+        <Route path="/blog/:id" element={<BlogViewScreen />} />
 
         {/* Dashboard routes */}
         <Route path="/*" element={<DashboardRoutes />} />
@@ -46,13 +49,17 @@ function DashboardRoutes() {
         ml={{ base: 0, md: 60 }}
       >
         <Routes>
-          <Route path="/admin-home" element={<Dashboard/>} />
-          <Route path="/bloglist" element={<BlogListScreen/>} />
-          <Route path="/admin-users" element={<UserListScreen/>} />
-        
+          <Route path="/admin-home" element={<Dashboard />} />
+          <Route path="/blogs" element={<AdminBlogsScreen />} />
+          <Route path="/blogs/:id" element={<AdminBlogScreen />} />
+          <Route path="/bloglist" element={<BlogListScreen />} />
+          <Route path="/admin-users" element={<UserListScreen />} />
 
-          {/* Customer Routes */} 
-          <Route path="/home" element={<AllBlogsScreen />} />
+
+          {/* Customer Routes */}
+          <Route path="/blogs" element={<AdminBlogsScreen />} />
+          <Route path="/profile" element={<ProfileScreen />} />
+
 
         </Routes>
         <Footer />

@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react';
 import {
   FiMenu,
-  FiChevronDown, 
+  FiChevronDown,
 } from 'react-icons/fi';
 import { IoHome, IoNewspaperSharp } from "react-icons/io5";
 import { MdAdminPanelSettings } from "react-icons/md";
@@ -31,7 +31,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 import { logout } from '../actions/userActions';
-import logoImage from '../images/logo.png';
 
 
 const SubLink = ({ to, children, onClose }) => {
@@ -49,13 +48,13 @@ const SubLink = ({ to, children, onClose }) => {
 
 const adminLinkItems = [
   { name: 'Home', icon: MdAdminPanelSettings, to: '/admin-home' },
-  { name: 'Blogs', icon: IoNewspaperSharp, to: '/home' },
-  { name: 'Manage', icon: FaListCheck, to: '/bloglist' },  
-  { name: 'Users', icon: FaUsers, to: '/admin-users' },  
+  { name: 'Blogs', icon: IoNewspaperSharp, to: '/blogs' },
+  { name: 'Manage', icon: FaListCheck, to: '/bloglist' },
+  { name: 'Users', icon: FaUsers, to: '/admin-users' },
 ];
 
 const userLinkItems = [
-  { name: 'Home', icon: IoHome, to: '/home' },
+  { name: 'Home', icon: IoHome, to: '/blogs' },
 ];
 
 const defaultLinkItems = userLinkItems;
@@ -68,14 +67,14 @@ const SidebarContent = ({ onClose }) => {
   let updatedLinkItems;
 
   if (userInfo && userInfo.role === 'admin') {
-    updatedLinkItems = adminLinkItems;  
+    updatedLinkItems = adminLinkItems;
   } else if (userInfo && userInfo.role === 'user') {
     updatedLinkItems = userLinkItems;
   } else {
     updatedLinkItems = defaultLinkItems;
   }
 
-    return (
+  return (
     <Box
       transition="3s ease"
       bg="white"
@@ -85,58 +84,69 @@ const SidebarContent = ({ onClose }) => {
       pos="fixed"
       h="full"
     >
-      <Flex h="16" alignItems="center" mx="8" justifyContent="space-between">        
-        <Image
-          src={logoImage}
-          alt=''
-					display={{ base: 'block', md: 'block' }}
-					w={{ base: '80%', md: '100%' }}
-          marginTop={{ base: 2, md: 0 }}
-        />
+      <Flex h="16" alignItems="center" mx="8" justifyContent="space-between">
+        <Text
+          display='flex'
+          mr={{ base: '100', md: '150' }}
+          fontSize="2xl"
+          fontFamily="monospace"
+          fontWeight="bold"
+          color="brandRed"
+        >
+          Sure
+          <Text
+            as='span'
+            fontSize="xl"
+            align="left"
+            color="brandBlue"
+          >
+            Bet
+          </Text>
+        </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} color="brandBlue" />
-      </Flex>      
+      </Flex>
       {updatedLinkItems.map((link) => (
-         <Box  borderRadius="lg" role="group" cursor="pointer" key={link.name}>
-         {link.subLinks ? (
-           <Menu key={link.name}>              
-             <MenuButton
-              mr="8"
-              as={Text}
-              h="14"
-              color="black" 
-              ml="6"
-              display="flex"
-              alignItems="center"
-              _hover={{ color: 'brandBlue' }}
-            >
-              <Icon
-                mr="4"
-                fontSize="16"
-                as={link.icon}
-                ml={2}
-                color="black" 
-                _groupHover={{ color: 'brandBlue' }}
-              />
-              {link.name}
-            </MenuButton>
-             <MenuList as={Box} bg="brandBlue" border="none" color="white">
-              {link.subLinks.map((subLink) => (
-                <SubLink key={subLink.name} to={subLink.to} onClose={onClose}>
-                  <Text
-                    px="4"
-                    py="2"
-                    color="brandBlue"
-                    _hover={{
-                      bg: 'brandBlue',
-                      color: 'white',
-                      borderRadius: 'lg',
-                    }}
-                  >
-                    {subLink.name}
-                  </Text>
-                </SubLink>
-              ))}
-            </MenuList>
+        <Box borderRadius="lg" role="group" cursor="pointer" key={link.name}>
+          {link.subLinks ? (
+            <Menu key={link.name}>
+              <MenuButton
+                mr="8"
+                as={Text}
+                h="14"
+                color="black"
+                ml="6"
+                display="flex"
+                alignItems="center"
+                _hover={{ color: 'brandBlue' }}
+              >
+                <Icon
+                  mr="4"
+                  fontSize="16"
+                  as={link.icon}
+                  ml={2}
+                  color="black"
+                  _groupHover={{ color: 'brandBlue' }}
+                />
+                {link.name}
+              </MenuButton>
+              <MenuList as={Box} bg="brandBlue" border="none" color="white">
+                {link.subLinks.map((subLink) => (
+                  <SubLink key={subLink.name} to={subLink.to} onClose={onClose}>
+                    <Text
+                      px="4"
+                      py="2"
+                      color="brandBlue"
+                      _hover={{
+                        bg: 'brandBlue',
+                        color: 'white',
+                        borderRadius: 'lg',
+                      }}
+                    >
+                      {subLink.name}
+                    </Text>
+                  </SubLink>
+                ))}
+              </MenuList>
             </Menu>
           ) : (
             <NavItem icon={link.icon} color="black" onClose={onClose}>
@@ -197,10 +207,10 @@ const NavItem = ({ icon, children, onClose, ...rest }) => {
 const MobileNav = ({ onOpen, ...rest }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isMobile] = useMediaQuery('(max-width: 48em)'); 
-  
+  const [isMobile] = useMediaQuery('(max-width: 48em)');
+
   const userLogin = useSelector((state) => state.userLogin);
-	const { userInfo } = userLogin;
+  const { userInfo } = userLogin;
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -214,7 +224,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
   }, [navigate, userInfo]);
 
   if (!userInfo) {
-    return null; 
+    return null;
   }
 
   const truncateText = (text, length) => {
@@ -241,19 +251,29 @@ const MobileNav = ({ onOpen, ...rest }) => {
         aria-label="open menu"
         icon={<FiMenu />}
       />
-      
-      <Flex alignItems="center" mx="8" justifyContent="space-between">        
-        <Image
-          src={logoImage}
-          alt=''
-          h={'auto'}
-					display={{ base: 'none', md: 'block' }}
-					w='130px'
-          marginTop={{ base: 2, md: 0 }}
-        />
-      </Flex>    
 
-      <HStack spacing={{ base: '0', md: '6' }}>                         
+      <Flex alignItems="center" mx="8" justifyContent="space-between">
+        <Text
+          display='flex'
+          mr={{ base: '100', md: '150' }}
+          fontSize="2xl"
+          fontFamily="monospace"
+          fontWeight="bold"
+          color="brandRed"
+        >
+          Sure
+          <Text
+            as='span'
+            fontSize="xl"
+            align="left"
+            color="brandBlue"
+          >
+            Bet
+          </Text>
+        </Text>
+      </Flex>
+
+      <HStack spacing={{ base: '0', md: '6' }}>
         <Flex alignItems={'center'}>
           {userInfo ? (
             <Menu>
@@ -261,9 +281,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
                 <HStack>
                   <Avatar
                     size={'sm'}
-                    src={ userInfo?.icon ? userInfo?.icon : 
-                    'https://media.istockphoto.com/id/914576586/photo/stand-out-from-the-crowd-and-different-concept-one-glowing-light-man-raising-his-hand-among.webp?a=1&b=1&s=612x612&w=0&k=20&c=wdTVK39bjlddEbaMomn_eJqS5wY_vcZUdf38keP3Avk='
-                  }
+                    src={userInfo?.icon ? userInfo?.icon :
+                      'https://media.istockphoto.com/id/914576586/photo/stand-out-from-the-crowd-and-different-concept-one-glowing-light-man-raising-his-hand-among.webp?a=1&b=1&s=612x612&w=0&k=20&c=wdTVK39bjlddEbaMomn_eJqS5wY_vcZUdf38keP3Avk='
+                    }
                   />
                   <VStack display="flex" alignItems="flex-start" spacing="1px" ml="2">
                     {userInfo && (
@@ -317,8 +337,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
 const SidebarWithHeader = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isMobile] = useMediaQuery('(max-width: 48em)'); 
-  
+  const [isMobile] = useMediaQuery('(max-width: 48em)');
+
   return (
     <Box bg="brandBlue">
       {!isMobile && <SidebarContent onClose={onClose} />}
@@ -331,11 +351,11 @@ const SidebarWithHeader = () => {
         w="50%"
       >
         <DrawerContent bg="brandBlue">
-        <SidebarContent onClose={onClose}  />
+          <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />      
+      <MobileNav onOpen={onOpen} />
     </Box>
   );
 };

@@ -28,7 +28,6 @@ app.use('/api/users', userRoutes);
 
 const __dirname = path.resolve();
 
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(favicon(path.join(__dirname, 'client', 'dist', 'logo.png')));

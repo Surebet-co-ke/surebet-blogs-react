@@ -34,19 +34,16 @@ const AllBlogsScreen = () => {
   const blogCardBg = useColorModeValue('white', 'gray.800');
   const blogCardHoverBg = useColorModeValue('gray.100', 'gray.700');
 
-  // Function to format the image URL
   const formatImageUrl = (imagePath) => {
-    if (!imagePath) return 'https://via.placeholder.com/400x200'; // Default image if no image is provided
+    if (!imagePath) return 'https://via.placeholder.com/400x200';
 
-    // Replace backslashes with forward slashes
     const normalizedPath = imagePath.replace(/\\/g, '/');
 
-    // Prepend the server's base URL if the path starts with /uploads
     if (normalizedPath.startsWith('/uploads')) {
-      return `/api${normalizedPath}`; // Assuming your server serves static files from /api/uploads
+      return `/api${normalizedPath}`; 
     }
 
-    return normalizedPath; // Return the path as-is if it's already a full URL
+    return normalizedPath;
   };
 
   return (
@@ -90,7 +87,7 @@ const AllBlogsScreen = () => {
                 onClick={() => handleBlogClick(blog.id)}
               >
                 <Image
-                  src={formatImageUrl(blog.image)} // Use the formatted image URL
+                  src={formatImageUrl(blog.image)} 
                   alt={blog.title}
                   h="200px"
                   w="100%"

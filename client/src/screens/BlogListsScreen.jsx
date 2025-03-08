@@ -146,6 +146,7 @@ const BlogListScreen = () => {
       };
 
       const { data } = await axios.post(`/api/uploads`, formData, config);
+
       setImage(data);
       setUploading(false);
     } catch (err) {
@@ -157,9 +158,9 @@ const BlogListScreen = () => {
   const totalPages = blogs && Array.isArray(blogs) ? Math.ceil(blogs.length / itemsPerPage) : 0;
   const paginatedBlogs = blogs && Array.isArray(blogs)
     ? blogs.slice(
-        itemsPerPage * (currentPage - 1),
-        itemsPerPage * currentPage
-      )
+      itemsPerPage * (currentPage - 1),
+      itemsPerPage * currentPage
+    )
     : [];
 
   const handlePageChange = (pageNumber) => {
@@ -234,7 +235,7 @@ const BlogListScreen = () => {
   return (
     <Box p="4" bg="white" borderRadius="lg" boxShadow="md" m={4} width="100%">
       <Text fontSize="xl" fontWeight="bold" m={8} color="brandBlue">
-        Blogs
+        Blogs Management
       </Text>
       <Flex m={5} alignItems="center" justifyContent="space-between" maxW="1000px">
         <Input
@@ -266,7 +267,15 @@ const BlogListScreen = () => {
       ) : error ? (
         <Message type="error">{error}</Message>
       ) : (
-        <Box bgColor="white" rounded="lg" shadow="lg" px="5" py="5" maxW="1200px">
+        <Box
+          bgColor="white"
+          rounded="lg"
+          shadow="lg"
+          px="5"
+          py="5"
+          overflowX="auto"
+          maxW="98%"
+        >
           <Table variant="simple" colorScheme="blue" size="sm">
             <Thead>
               <Tr>
@@ -283,8 +292,16 @@ const BlogListScreen = () => {
                 <Tr key={blog.id}>
                   <Td>{index + 1 + (currentPage - 1) * itemsPerPage}</Td>
                   <Td>{blog.author}</Td>
-                  <Td>{blog.title}</Td>
-                  <Td>{blog.article.substring(0, 50)}...</Td>
+                  <Td>
+                    <Text noOfLines={1} maxW="180px"> 
+                      {blog.title}
+                    </Text>
+                  </Td>
+                  <Td>
+                    <Text noOfLines={2} maxW="250px"> 
+                      {blog.article}
+                    </Text>
+                  </Td>
                   <Td>{blog.image ? 'Yes' : 'No'}</Td>
                   <Td>
                     <Flex>
