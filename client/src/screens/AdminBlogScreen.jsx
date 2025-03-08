@@ -42,23 +42,9 @@ const AdminBlogScreen = () => {
   };
 
   return (
-    <Box>
-      {/* Header */}
-      <Flex
-        bg={headerBg}
-        color="white"
-        p={4}
-        justifyContent="center"
-        alignItems="center"
-        boxShadow="md"
-      >
-        <Heading as="h1" size="xl">
-          Blog
-        </Heading>
-      </Flex>
-
+    <Box>      
       {/* Blog Content */}
-      <Box p={4} maxW="800px" mx="auto" bg={contentBg} borderRadius="lg" boxShadow="md" mt={4}>
+      <Box p={4} maxW="800px" mx="auto" bg={contentBg} borderRadius="lg" boxShadow="md" mt={8}>
         {loading ? (
           <Loader />
         ) : error ? (

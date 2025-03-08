@@ -14,6 +14,8 @@ import {
 import { listBlogs } from '../actions/blogActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import LandingHeader from './LandingHeader';
+import Footer from '../components/Footer';
 
 const AllBlogsScreen = () => {
   const dispatch = useDispatch();
@@ -40,7 +42,7 @@ const AllBlogsScreen = () => {
     const normalizedPath = imagePath.replace(/\\/g, '/');
 
     if (normalizedPath.startsWith('/uploads')) {
-      return `/api${normalizedPath}`; 
+      return `/api${normalizedPath}`;
     }
 
     return normalizedPath;
@@ -48,20 +50,7 @@ const AllBlogsScreen = () => {
 
   return (
     <Box>
-      {/* Header */}
-      <Flex
-        bg={headerBg}
-        color="white"
-        p={4}
-        justifyContent="center"
-        alignItems="center"
-        boxShadow="md"
-      >
-        <Heading as="h1" size="xl">
-          Blog
-        </Heading>
-      </Flex>
-
+      <LandingHeader />
       {/* Blog List */}
       <Box p={4} maxW="1200px" mx="auto">
         {loading ? (
@@ -69,7 +58,7 @@ const AllBlogsScreen = () => {
         ) : error ? (
           <Message type="error">{error}</Message>
         ) : (
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mx="auto" mt={4}>
             {blogs.map((blog) => (
               <Box
                 key={blog.id}
@@ -87,7 +76,7 @@ const AllBlogsScreen = () => {
                 onClick={() => handleBlogClick(blog.id)}
               >
                 <Image
-                  src={formatImageUrl(blog.image)} 
+                  src={formatImageUrl(blog.image)}
                   alt={blog.title}
                   h="200px"
                   w="100%"
@@ -117,6 +106,8 @@ const AllBlogsScreen = () => {
           </SimpleGrid>
         )}
       </Box>
+
+      <Footer />
     </Box>
   );
 };

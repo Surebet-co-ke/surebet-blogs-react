@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
-  Flex,
   Heading,
   Image,
   Text,
@@ -13,6 +12,9 @@ import {
 import { getBlogDetails } from '../actions/blogActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import LandingHeader from './LandingHeader';
+import Footer from '../components/Footer';
+
 
 const BlogViewScreen = () => {
   const dispatch = useDispatch();
@@ -43,19 +45,7 @@ const BlogViewScreen = () => {
 
   return (
     <Box>
-      {/* Header */}
-      <Flex
-        bg={headerBg}
-        color="white"
-        p={4}
-        justifyContent="center"
-        alignItems="center"
-        boxShadow="md"
-      >
-        <Heading as="h1" size="xl">
-          Blog
-        </Heading>
-      </Flex>
+      <LandingHeader />
 
       {/* Blog Content */}
       <Box p={4} maxW="800px" mx="auto" bg={contentBg} borderRadius="lg" boxShadow="md" mt={4}>
@@ -94,6 +84,8 @@ const BlogViewScreen = () => {
           </>
         )}
       </Box>
+
+      <Footer />
     </Box>
   );
 };
