@@ -23,9 +23,9 @@ import {
   FormLabel,
   Textarea,
 } from '@chakra-ui/react';
-import { IoAdd, IoTrashBinSharp, IoPencilSharp } from 'react-icons/io5';
+import { IoAdd, IoTrashBinSharp, IoPencilSharp, IoEyeSharp } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { listBlogs, createBlog, updateBlog, deleteBlog } from '../actions/blogActions';
@@ -294,12 +294,12 @@ const BlogListScreen = () => {
                   <Td>{index + 1 + (currentPage - 1) * itemsPerPage}</Td>
                   <Td>{blog.author}</Td>
                   <Td>
-                    <Text noOfLines={1} maxW="180px"> 
+                    <Text noOfLines={1} maxW="180px">
                       {blog.title}
                     </Text>
                   </Td>
                   <Td>
-                    <Text noOfLines={2} maxW="250px"> 
+                    <Text noOfLines={2} maxW="250px">
                       {blog.article}
                     </Text>
                   </Td>
@@ -308,12 +308,22 @@ const BlogListScreen = () => {
                     <Flex>
                       <Button
                         size="sm"
-                        colorScheme="blue"
+                        colorScheme="green"
                         variant="outline"
                         mr="2"
                         onClick={() => openModal(blog)}
                       >
                         <Icon as={IoPencilSharp} />
+                      </Button>
+                      <Button
+                        as={RouterLink}
+                        to={`/bloglist/${blog.id}/categories`}
+                        size="sm"
+                        colorScheme="blue"
+                        variant="outline"
+                        mr="2"
+                      >
+                        <Icon as={IoEyeSharp} />
                       </Button>
                       <Button
                         size="sm"

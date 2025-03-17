@@ -7,7 +7,7 @@ import Category from '../models/categoryModel.js';
 /**
  * @desc    Get all blogs
  * @route   GET /api/blogs
- * @access  Public
+ * @access  public
  */
 const getAllBlogs = asyncHandler(async (req, res) => {
   const { search } = req.query;
@@ -41,7 +41,7 @@ const getAllBlogs = asyncHandler(async (req, res) => {
 /**
  * @desc    Get blog by ID
  * @route   GET /api/blogs/:id
- * @access  Public
+ * @access  public
  */
 const getBlogById = asyncHandler(async (req, res) => {
   const blog = await Blog.findByPk(req.params.id, {
@@ -65,7 +65,7 @@ const getBlogById = asyncHandler(async (req, res) => {
 /**
  * @desc    Create a blog
  * @route   POST /api/blogs
- * @access  Private/Admin
+ * @access  private/admin
  */
 const createBlog = asyncHandler(async (req, res) => {
   const { author, title, article, image, categories } = req.body;
@@ -87,7 +87,7 @@ const createBlog = asyncHandler(async (req, res) => {
 /**
  * @desc    Update a blog
  * @route   PUT /api/blogs/:id
- * @access  Private/Admin
+ * @access  private/admin
  */
 const updateBlog = asyncHandler(async (req, res) => {
   const { author, title, article, image, categories } = req.body;
@@ -121,7 +121,7 @@ const updateBlog = asyncHandler(async (req, res) => {
 /**
  * @desc    Delete a blog
  * @route   DELETE /api/blogs/:id
- * @access  Private/Admin
+ * @access  private/admin
  */
 const deleteBlog = asyncHandler(async (req, res) => {
   const blog = await Blog.findByPk(req.params.id);
@@ -138,7 +138,7 @@ const deleteBlog = asyncHandler(async (req, res) => {
 /**
  * @desc    Delete blogs by date range
  * @route   DELETE /api/blogs/delete-bulk
- * @access  Private/Admin
+ * @access  private/admin
  */
 const deleteBlogsByDateRange = asyncHandler(async (req, res) => {
   const { startDate, endDate } = req.body;
@@ -161,26 +161,30 @@ const deleteBlogsByDateRange = asyncHandler(async (req, res) => {
 });
 
 /**
- * @desc    Get all categories
- * @route   GET /api/blogs/categories
- * @access  Public
+ * @desc    Get all categories for a specific blog
+ * @route   GET /api/blogs/:blogId/categories
+ * @access  public
  */
-const getAllCategories = asyncHandler(async (req, res) => {
+const getAllBlogCategories = asyncHandler(async (req, res) => {
+  const { blogId } = req.params;
+
   const categories = await Category.findAll({
-    attributes: ['id', 'name'], // Only fetch necessary fields
+    where: { blog_id: blogId },
+    attributes: ['id', 'name'],
   });
+
   res.json(categories);
 });
 
 /**
- * @desc    Get category by ID
- * @route   GET /api/blogs/categories/:id
- * @access  Public
+ * @desc    Get category by ID for a specific blog
+ * @route   GET /api/blogs/:blogId/categories/:id
+ * @access  public
  */
-const getCategoryById = asyncHandler(async (req, res) => {
-  const category = await Category.findByPk(req.params.id, {
-    attributes: ['id', 'name'],
-  });
+const  getBlogCategoryById = asyncHandler(async (req, res) => {
+  const { id, blogId } = req.params;
+
+  const category = await Category.findOne({ where: { id, blog_id: blogId } });
 
   if (!category) {
     res.status(404);
@@ -192,29 +196,32 @@ const getCategoryById = asyncHandler(async (req, res) => {
 
 /**
  * @desc    Create a category
- * @route   POST /api/blogs/categories
- * @access  Private/Admin
+ * @route   POST /api/blogs/:blogId/categories
+ * @access  private/admin
  */
 const createCategory = asyncHandler(async (req, res) => {
   const { name } = req.body;
+  const { blogId } = req.params;
 
-  if (!name) {
+  if (!name || !blogId) {
     res.status(400);
-    throw new Error('Please provide a category name');
+    throw new Error('Please provide a category name and blog ID');
   }
 
-  const category = await Category.create({ name });
+  const category = await Category.create({ name, blog_id: blogId });
   res.status(201).json(category);
 });
 
 /**
  * @desc    Update a category
- * @route   PUT /api/blogs/categories/:id
- * @access  Private/Admin
+ * @route   PUT /api/blogs/:blogId/categories/:id
+ * @access  private/admin
  */
 const updateCategory = asyncHandler(async (req, res) => {
   const { name } = req.body;
-  const category = await Category.findByPk(req.params.id);
+  const { id, blogId } = req.params;
+
+  const category = await Category.findOne({ where: { id, blog_id: blogId } });
 
   if (!category) {
     res.status(404);
@@ -229,11 +236,13 @@ const updateCategory = asyncHandler(async (req, res) => {
 
 /**
  * @desc    Delete a category
- * @route   DELETE /api/blogs/categories/:id
- * @access  Private/Admin
+ * @route   DELETE /api/blogs/:blogId/categories/:id
+ * @access  private/admin
  */
 const deleteCategory = asyncHandler(async (req, res) => {
-  const category = await Category.findByPk(req.params.id);
+  const { id, blogId } = req.params;
+
+  const category = await Category.findOne({ where: { id, blog_id: blogId } });
 
   if (!category) {
     res.status(404);
@@ -251,8 +260,8 @@ export {
   updateBlog,
   deleteBlog,
   deleteBlogsByDateRange,
-  getAllCategories,
-  getCategoryById,
+  getAllBlogCategories,
+   getBlogCategoryById,
   createCategory,
   updateCategory,
   deleteCategory,

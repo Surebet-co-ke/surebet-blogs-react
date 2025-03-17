@@ -28,7 +28,7 @@ export const getAllImages = asyncHandler(async (req, res) => {
 /**
  * @desc    Delete a specific image by filename
  * @route   DELETE /api/images/:filename
- * @access  Private/Admin
+ * @access  private/admin
  */
 export const deleteImage = asyncHandler(async (req, res) => {
   const { filename } = req.params;
@@ -57,7 +57,7 @@ export const deleteImage = asyncHandler(async (req, res) => {
 /**
  * @desc    Remove redundant images (images not referenced in the Blog model)
  * @route   DELETE /api/images/cleanup/unused
- * @access  Private/Admin
+ * @access  private/admin
  */
 export const removeRedundantImages = asyncHandler(async (req, res) => {
   try {

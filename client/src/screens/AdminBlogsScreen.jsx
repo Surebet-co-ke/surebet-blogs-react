@@ -3,13 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
     Box,
+    Flex,
     Heading,
     Image,
     Text,
     Button,
     SimpleGrid,
     useColorModeValue,
+    Badge,
 } from '@chakra-ui/react';
+
 import { listBlogs } from '../actions/blogActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -51,13 +54,13 @@ const AdminBlogsScreen = () => {
             </Text>
 
             {/* Blog List */}
-            <Box p={4} maxW="1200px" mx="auto">
+            <Box p={4} mx="auto">
                 {loading ? (
                     <Loader />
                 ) : error ? (
                     <Message type="error">{error}</Message>
                 ) : (
-                    <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+                    <SimpleGrid columns={{ base: 1, md: 2, lg:3 }} spacing={6}>
                         {blogs.map((blog) => (
                             <Box
                                 key={blog.id}
@@ -85,7 +88,25 @@ const AdminBlogsScreen = () => {
                                     <Text fontSize="sm" color="gray.500" mb={2}>
                                         By {blog.author} | {new Date(blog.created_at).toLocaleDateString()}
                                     </Text>
-                                    <Heading as="h2" size="md" mb={2} color="brandBlue.500">
+
+                                    {blog.categories && blog.categories.length > 0 && (
+                                        <Flex mb={2} wrap="wrap" gap={2}>
+                                            {blog.categories.map((category) => (
+                                                <Badge
+                                                    key={category.id}
+                                                    bg="brandBlue"
+                                                    color="white"
+                                                    px={2}
+                                                    py={1}
+                                                    borderRadius="md"
+                                                >
+                                                    {category.name}
+                                                </Badge>
+                                            ))}
+                                        </Flex>
+                                    )}
+
+                                    <Heading as="h2" size="md" mb={2} color="brandBlue">
                                         {blog.title}
                                     </Heading>
                                     <Text noOfLines={3} color="gray.700">
@@ -93,7 +114,6 @@ const AdminBlogsScreen = () => {
                                     </Text>
                                     <Button
                                         mt={4}
-                                        colorScheme="brandRed"
                                         size="sm"
                                         onClick={() => handleBlogClick(blog.id)}
                                     >

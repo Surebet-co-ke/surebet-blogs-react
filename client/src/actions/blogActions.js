@@ -36,6 +36,7 @@ import {
   BLOG_CATEGORY_DELETE_FAIL,
 } from '../constants/blogConstants';
 
+// Blog Actions (unchanged)
 export const listBlogs = (searchQuery = '') => async (dispatch) => {
   try {
     dispatch({ type: BLOG_LIST_REQUEST });
@@ -189,11 +190,11 @@ export const deleteBlogsByDateRange = (startDate, endDate) => async (dispatch, g
   }
 };
 
-export const listCategories = () => async (dispatch) => {
+export const listCategories = (blogId) => async (dispatch) => {
   try {
     dispatch({ type: BLOG_CATEGORY_LIST_REQUEST });
 
-    const { data } = await axios.get(`/api/blogs/categories`);
+    const { data } = await axios.get(`/api/blogs/${blogId}/categories`);
 
     dispatch({ type: BLOG_CATEGORY_LIST_SUCCESS, payload: data });
   } catch (err) {
@@ -207,11 +208,11 @@ export const listCategories = () => async (dispatch) => {
   }
 };
 
-export const getCategoryDetails = (id) => async (dispatch) => {
+export const getCategoryDetails = (blogId, id) => async (dispatch) => {
   try {
     dispatch({ type: BLOG_CATEGORY_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/blogs/categories/${id}`);
+    const { data } = await axios.get(`/api/blogs/${blogId}/categories/${id}`);
 
     dispatch({ type: BLOG_CATEGORY_DETAILS_SUCCESS, payload: data });
   } catch (err) {
@@ -225,7 +226,7 @@ export const getCategoryDetails = (id) => async (dispatch) => {
   }
 };
 
-export const createCategory = (category) => async (dispatch, getState) => {
+export const createCategory = (blogId, category) => async (dispatch, getState) => {
   try {
     dispatch({ type: BLOG_CATEGORY_CREATE_REQUEST });
 
@@ -240,7 +241,7 @@ export const createCategory = (category) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post(`/api/blogs/categories`, category, config);
+    const { data } = await axios.post(`/api/blogs/${blogId}/categories`, category, config);
 
     dispatch({ type: BLOG_CATEGORY_CREATE_SUCCESS, payload: data });
   } catch (err) {
@@ -254,7 +255,7 @@ export const createCategory = (category) => async (dispatch, getState) => {
   }
 };
 
-export const updateCategory = (id, category) => async (dispatch, getState) => {
+export const updateCategory = (blogId, id, category) => async (dispatch, getState) => {
   try {
     dispatch({ type: BLOG_CATEGORY_UPDATE_REQUEST });
 
@@ -269,7 +270,7 @@ export const updateCategory = (id, category) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(`/api/blogs/categories/${id}`, category, config);
+    const { data } = await axios.put(`/api/blogs/${blogId}/categories/${id}`, category, config);
 
     dispatch({ type: BLOG_CATEGORY_UPDATE_SUCCESS, payload: data });
   } catch (err) {
@@ -283,7 +284,7 @@ export const updateCategory = (id, category) => async (dispatch, getState) => {
   }
 };
 
-export const deleteCategory = (id) => async (dispatch, getState) => {
+export const deleteCategory = (blogId, id) => async (dispatch, getState) => {
   try {
     dispatch({ type: BLOG_CATEGORY_DELETE_REQUEST });
 
@@ -297,7 +298,7 @@ export const deleteCategory = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`/api/blogs/categories/${id}`, config);
+    await axios.delete(`/api/blogs/${blogId}/categories/${id}`, config);
 
     dispatch({ type: BLOG_CATEGORY_DELETE_SUCCESS });
   } catch (err) {

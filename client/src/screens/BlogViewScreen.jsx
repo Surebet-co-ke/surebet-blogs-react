@@ -8,7 +8,10 @@ import {
   Text,
   Button,
   useColorModeValue,
+  Flex,
+  Badge,
 } from '@chakra-ui/react';
+
 import { getBlogDetails } from '../actions/blogActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -28,11 +31,10 @@ const BlogViewScreen = () => {
     dispatch(getBlogDetails(id));
   }, [dispatch, id]);
 
-  const headerBg = useColorModeValue('brandBlue.500', 'brandBlue.700');
   const contentBg = useColorModeValue('white', 'gray.800');
 
   const formatImageUrl = (imagePath) => {
-    if (!imagePath) return 'https://via.placeholder.com/400x200'; 
+    if (!imagePath) return 'https://via.placeholder.com/400x200';
 
     const normalizedPath = imagePath.replace(/\\/g, '/');
 
@@ -40,7 +42,7 @@ const BlogViewScreen = () => {
       return `/api${normalizedPath}`;
     }
 
-    return normalizedPath; 
+    return normalizedPath;
   };
 
   return (
@@ -56,7 +58,7 @@ const BlogViewScreen = () => {
         ) : (
           <>
             <Image
-              src={formatImageUrl(blog.image)} 
+              src={formatImageUrl(blog.image)}
               alt={blog.title}
               h="400px"
               w="100%"
@@ -67,7 +69,25 @@ const BlogViewScreen = () => {
               <Text fontSize="sm" color="gray.500" mb={2}>
                 By {blog.author} | {new Date(blog.created_at).toLocaleDateString()}
               </Text>
-              <Heading as="h2" size="xl" mb={4} color="brandBlue.500">
+
+              {blog.categories && blog.categories.length > 0 && (
+                <Flex mb={2} wrap="wrap" gap={2}>
+                  {blog.categories.map((category) => (
+                    <Badge
+                      key={category.id}
+                      bg="brandBlue"
+                      color="white"
+                      px={2}
+                      py={1}
+                      borderRadius="md"
+                    >
+                      {category.name}
+                    </Badge>
+                  ))}
+                </Flex>
+              )}
+
+              <Heading as="h2" size="xl" mb={4} color="brandBlue">
                 {blog.title}
               </Heading>
               <Text fontSize="lg" color="gray.700" whiteSpace="pre-line">
@@ -75,7 +95,6 @@ const BlogViewScreen = () => {
               </Text>
               <Button
                 mt={4}
-                colorScheme="brandRed"
                 onClick={() => navigate('/')}
               >
                 Back to Blogs

@@ -7,8 +7,8 @@ import {
   updateBlog,
   deleteBlog,
   deleteBlogsByDateRange,
-  getAllCategories,
-  getCategoryById,
+  getAllBlogCategories,
+   getBlogCategoryById,
   createCategory,
   updateCategory,
   deleteCategory
@@ -26,10 +26,10 @@ router.route('/:id').delete(protect, deleteBlog);
 router.route('/delete-bulk').delete(protect, deleteBlogsByDateRange);
 
 // Category Routes
-router.route('/categories').get(getAllCategories);
-router.route('/categories/:id').get(getCategoryById);
-router.route('/categories').post(protect, createCategory);
-router.route('/categories/:id').put(protect, updateCategory);
-router.route('/categories/:id').delete(protect, deleteCategory);
+router.route('/:blogId/categories').get(getAllBlogCategories);
+router.route('/:blogId/categories/:id').get(getBlogCategoryById);
+router.route('/:blogId/categories').post(protect, createCategory);
+router.route('/:blogId/categories/:id').put(protect, updateCategory);
+router.route('/:blogId/categories/:id').delete(protect, deleteCategory);
 
 export default router;
