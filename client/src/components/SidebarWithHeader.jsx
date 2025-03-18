@@ -25,6 +25,7 @@ import {
 } from 'react-icons/fi';
 import { IoHome, IoNewspaperSharp } from "react-icons/io5";
 import { MdAdminPanelSettings } from "react-icons/md";
+import { FaImages } from "react-icons/fa";
 import { FaUsers, FaListCheck } from "react-icons/fa6";
 import { Link as RouterLink, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,6 +51,7 @@ const adminLinkItems = [
   { name: 'Home', icon: MdAdminPanelSettings, to: '/admin-home' },
   { name: 'Blogs', icon: IoNewspaperSharp, to: '/blogs' },
   { name: 'Manage', icon: FaListCheck, to: '/bloglist' },
+  { name: 'Images', icon: FaImages, to: '/imagelist' },
   { name: 'Users', icon: FaUsers, to: '/admin-users' },
 ];
 

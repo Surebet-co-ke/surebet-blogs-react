@@ -17,7 +17,7 @@ const getAllBlogs = asyncHandler(async (req, res) => {
     whereCondition = {
       [Op.or]: [
         { title: { [Op.like]: `%${search}%` } },
-        { '$categories.name$': { [Op.like]: `%${search}%` } }, // Search in associated categories
+        { '$categories.name$': { [Op.like]: `%${search}%` } }, 
       ],
     };
   }
@@ -26,9 +26,9 @@ const getAllBlogs = asyncHandler(async (req, res) => {
     include: [
       {
         model: Category,
-        as: 'categories', // Ensure this matches the alias defined in the model
-        attributes: ['id', 'name'], // Only fetch necessary fields
-        required: false, // Left join to include blogs without categories
+        as: 'categories', 
+        attributes: ['id', 'name'],
+        required: false, 
       },
     ],
     where: whereCondition,
@@ -70,15 +70,13 @@ const getBlogById = asyncHandler(async (req, res) => {
 const createBlog = asyncHandler(async (req, res) => {
   const { author, title, article, image, categories } = req.body;
 
-  // Create the blog
   const blog = await Blog.create({ author, title, article, image });
 
-  // If categories are provided, associate them with the blog
   if (categories && categories.length > 0) {
     const categoryInstances = await Category.findAll({
-      where: { id: categories }, // Find categories by their IDs
+      where: { id: categories }, 
     });
-    await blog.setCategories(categoryInstances); // Associate categories with the blog
+    await blog.setCategories(categoryInstances); 
   }
 
   res.status(201).json(blog);
@@ -98,16 +96,12 @@ const updateBlog = asyncHandler(async (req, res) => {
     throw new Error('Blog not found');
   }
 
-  // Update blog fields
   blog.author = author || blog.author;
   blog.title = title || blog.title;
   blog.article = article || blog.article;
   blog.image = image || blog.image;
 
-  // Save the updated blog
   const updatedBlog = await blog.save();
-
-  // Update associated categories if provided
   if (categories && categories.length > 0) {
     const categoryInstances = await Category.findAll({
       where: { id: categories },

@@ -15,6 +15,7 @@ import AdminBlogsScreen from './screens/AdminBlogsScreen.jsx';
 import AdminBlogScreen from './screens/AdminBlogScreen.jsx';
 import BlogListScreen from './screens/BlogListsScreen';
 import BlogCategoriesScreen from './screens/BlogCategoriesScreen.jsx';
+import ImageListScreen from './screens/ImageListScreen.jsx';
 import ProfileScreen from './screens/ProfileScreen.jsx';
 import UserListScreen from './screens/UserListScreen';
 
@@ -55,6 +56,7 @@ function DashboardRoutes() {
           <Route path="/blogs/:id" element={<AdminBlogScreen />} />
           <Route path="/bloglist" element={<BlogListScreen />} />
           <Route path="/bloglist/:blogId/categories" element={<BlogCategoriesScreen />} />
+          <Route path="/imagelist" element={<ImageListScreen />} /> 
           <Route path="/admin-users" element={<UserListScreen />} />
 
 
