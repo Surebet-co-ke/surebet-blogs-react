@@ -47,6 +47,15 @@ const AdminBlogsScreen = () => {
         return normalizedPath;
     };
 
+    const createTextPreview = (html) => {
+        if (!html) return 'No content available';
+        
+        const plainText = html.replace(/<[^>]*>/g, '');
+        return plainText.length > 150 
+            ? plainText.substring(0, 150) + '...' 
+            : plainText;
+    };
+
     return (
         <Box p="4" bg="white" borderRadius="lg" boxShadow="md" m={4} width="100%">
             <Text fontSize="xl" fontWeight="bold" m={8} color="brandBlue">
@@ -60,7 +69,7 @@ const AdminBlogsScreen = () => {
                 ) : error ? (
                     <Message type="error">{error}</Message>
                 ) : (
-                    <SimpleGrid columns={{ base: 1, md: 2, lg:3 }} spacing={6}>
+                    <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
                         {blogs.map((blog) => (
                             <Box
                                 key={blog.id}
@@ -109,13 +118,20 @@ const AdminBlogsScreen = () => {
                                     <Heading as="h2" size="md" mb={2} color="brandBlue">
                                         {blog.title}
                                     </Heading>
-                                    <Text noOfLines={3} color="gray.700">
-                                        {blog.article}
-                                    </Text>
+                                    <Text 
+                                        noOfLines={3} 
+                                        color="gray.700"
+                                        dangerouslySetInnerHTML={{ 
+                                            __html: createTextPreview(blog.article) 
+                                        }}
+                                    />
                                     <Button
                                         mt={4}
                                         size="sm"
-                                        onClick={() => handleBlogClick(blog.id)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleBlogClick(blog.id);
+                                        }}
                                     >
                                         Read More
                                     </Button>

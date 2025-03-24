@@ -21,7 +21,6 @@ import {
   ModalCloseButton,
   FormControl,
   FormLabel,
-  Textarea,
 } from '@chakra-ui/react';
 import { IoAdd, IoTrashBinSharp, IoPencilSharp, IoEyeSharp } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +30,7 @@ import axios from 'axios';
 import { listBlogs, createBlog, updateBlog, deleteBlog } from '../actions/blogActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import QuillEditor from './QuillEditor';
 
 
 const BlogListScreen = () => {
@@ -299,9 +299,15 @@ const BlogListScreen = () => {
                     </Text>
                   </Td>
                   <Td>
-                    <Text noOfLines={2} maxW="250px">
-                      {blog.article}
-                    </Text>
+                    <Text
+                      noOfLines={2}
+                      maxW="250px"
+                      dangerouslySetInnerHTML={{
+                        __html: blog.article
+                          ? blog.article.replace(/<[^>]*>/g, '').substring(0, 100) + '...'
+                          : 'No content'
+                      }}
+                    />
                   </Td>
                   <Td>{blog.image ? 'Yes' : 'No'}</Td>
                   <Td>
@@ -372,10 +378,11 @@ const BlogListScreen = () => {
 
             <FormControl mt="4">
               <FormLabel>Article</FormLabel>
-              <Textarea
-                placeholder="Enter blog article"
-                value={article}
-                onChange={(e) => setArticle(e.target.value)}
+              <QuillEditor
+                key={isModalOpen ? 'open' : 'closed'}
+                value={blogDetailsData?.article || ''}
+                onChange={setArticle}
+                placeholder="Enter blog article..."
               />
             </FormControl>
 
@@ -383,7 +390,7 @@ const BlogListScreen = () => {
               <FormLabel>Image</FormLabel>
               <Input
                 type="text"
-                placeholder="Enter image URL"
+                placeholder="Choose image"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               />

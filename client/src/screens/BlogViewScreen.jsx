@@ -11,6 +11,7 @@ import {
   Flex,
   Badge,
 } from '@chakra-ui/react';
+import DOMPurify from 'dompurify';
 
 import { getBlogDetails } from '../actions/blogActions';
 import Loader from '../components/Loader';
@@ -44,6 +45,19 @@ const BlogViewScreen = () => {
 
     return normalizedPath;
   };
+
+  const createMarkup = (html) => {
+    return {
+      __html: DOMPurify.sanitize(html, {
+        ALLOWED_TAGS: [
+          'p', 'strong', 'em', 'u', 's', 'a', 'ul', 'ol', 'li',
+          'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'br', 'span'
+        ],
+        ALLOWED_ATTR: ['href', 'target', 'rel', 'style', 'class']
+      })
+    };
+  };
+
 
   return (
     <Box>
@@ -90,9 +104,20 @@ const BlogViewScreen = () => {
               <Heading as="h2" size="xl" mb={4} color="brandBlue">
                 {blog.title}
               </Heading>
-              <Text fontSize="lg" color="gray.700" whiteSpace="pre-line">
-                {blog.article}
-              </Text>
+
+              {/* Updated article display */}
+              <Box
+                className="ql-editor"
+                dangerouslySetInnerHTML={createMarkup(blog.article)}
+                sx={{
+                  '& p': { mb: 4 },
+                  '& h2': { fontSize: 'xl', fontWeight: 'bold', mt: 6, mb: 4 },
+                  '& ul, & ol': { pl: 6, mb: 4 },
+                  '& li': { mb: 2 },
+                  '& a': { color: 'blue.500', textDecoration: 'underline' },
+                }}
+              />
+
               <Button
                 mt={4}
                 onClick={() => navigate('/')}

@@ -12,6 +12,7 @@ import {
   useColorModeValue,
   Badge,
 } from '@chakra-ui/react';
+import DOMPurify from 'dompurify';
 
 import { listBlogs } from '../actions/blogActions';
 import Loader from '../components/Loader';
@@ -34,7 +35,6 @@ const AllBlogsScreen = () => {
     navigate(`/blog/${id}`);
   };
 
-  const headerBg = useColorModeValue('brandBlue', 'brandBlue.700');
   const blogCardBg = useColorModeValue('white', 'gray.800');
   const blogCardHoverBg = useColorModeValue('gray.100', 'gray.700');
 
@@ -48,6 +48,15 @@ const AllBlogsScreen = () => {
     }
 
     return normalizedPath;
+  };
+
+  const createTextPreview = (html) => {
+    if (!html) return 'No content available';
+    
+    const plainText = html.replace(/<[^>]*>/g, '');
+    return plainText.length > 150 
+      ? plainText.substring(0, 150) + '...' 
+      : plainText;
   };
 
   return (
@@ -88,6 +97,7 @@ const AllBlogsScreen = () => {
                   <Text fontSize="sm" color="gray.500" mb={2}>
                     By {blog.author} | {new Date(blog.created_at).toLocaleDateString()}
                   </Text>
+                  
                   {/* Display Categories as Badges */}
                   {blog.categories && blog.categories.length > 0 && (
                     <Flex mb={2} wrap="wrap" gap={2}>
@@ -109,13 +119,24 @@ const AllBlogsScreen = () => {
                   <Heading as="h2" size="md" mb={2} color="brandBlue">
                     {blog.title}
                   </Heading>
-                  <Text noOfLines={3} color="gray.700">
-                    {blog.article}
-                  </Text>
+                  
+                  {/* Updated article preview */}
+                  <Text 
+                    noOfLines={3} 
+                    color="gray.700"
+                    dangerouslySetInnerHTML={{ 
+                      __html: createTextPreview(blog.article) 
+                    }}
+                  />
+                  
                   <Button
                     mt={4}
                     size="sm"
-                    onClick={() => handleBlogClick(blog.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleBlogClick(blog.id);
+                    }}
+                    colorScheme="brandBlue"
                   >
                     Read More
                   </Button>

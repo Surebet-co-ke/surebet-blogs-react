@@ -8,31 +8,57 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { HiMenu } from 'react-icons/hi';
-import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
 
 import logoImage from '../images/logo.png';
 
-const MenuItems = ({ to, children, onClick }) => (
-  <RouterLink to={to} style={{ textDecoration: 'none' }}>
-    <Button
-      variant="link"
-      mt={[4, 4, 0, 0]}
-      mr={'36px'}
-      display="block"
-      fontWeight="medium"
-      fontSize="md"
-      color="white" // Changed to white for better visibility on brandBlue background
-      _hover={{
-        color: 'brandPurple',
-        textDecoration: 'none',
-      }}
-      onClick={onClick}
+const MenuItems = ({ to, children, onClick, isExternal = false }) => {
+  return isExternal ? (
+    <Link
+      href={to}
+      isExternal
+      style={{ textDecoration: 'none' }}
+      _hover={{ textDecoration: 'none' }}
     >
-      {children}
-    </Button>
-  </RouterLink>
-);
+      <Button
+        variant="link"
+        mt={[4, 4, 0, 0]}
+        mr={'36px'}
+        display="block"
+        fontWeight="medium"
+        fontSize="md"
+        color="white"
+        _hover={{
+          color: 'brandPurple',
+          textDecoration: 'none',
+        }}
+        onClick={onClick}
+      >
+        {children}
+      </Button>
+    </Link>
+  ) : (
+    <RouterLink to={to} style={{ textDecoration: 'none' }}>
+      <Button
+        variant="link"
+        mt={[4, 4, 0, 0]}
+        mr={'36px'}
+        display="block"
+        fontWeight="medium"
+        fontSize="md"
+        color="white"
+        _hover={{
+          color: 'brandPurple',
+          textDecoration: 'none',
+        }}
+        onClick={onClick}
+      >
+        {children}
+      </Button>
+    </RouterLink>
+  );
+};
 
 const LandingHeader = () => {
   const [show, setShow] = useState(false);
@@ -52,20 +78,20 @@ const LandingHeader = () => {
       >
         {/* Social Media Links */}
         <Flex align="center">
-          <Link href="https://surebet.co.ke" isExternal mx={2}>
+          <Link href="https://www.facebook.com/kesurebet" isExternal mx={2}>
             <FaFacebook size={20} />
           </Link>
-          <Link href="https://surebet.co.ke" isExternal mx={2}>
+          <Link href="https://x.com/Kenya_Surebet" isExternal mx={2}>
             <FaTwitter size={20} />
           </Link>
-          <Link href="https://surebet.co.ke" isExternal mx={2}>
+          <Link href="https://www.linkedin.com/company/surebet-ke-official" isExternal mx={2}>
             <FaLinkedin size={20} />
           </Link>
-          <Link href="https://surebet.co.ke" isExternal mx={2}>
+          <Link href="https://www.instagram.com/surebet_kenya_official" isExternal mx={2}>
             <FaInstagram size={20} />
           </Link>
-          <Link href="https://surebet.co.ke" isExternal mx={2}>
-            <FaYoutube size={20} />
+          <Link href="https://wa.me/254724599488" isExternal mx={2}>
+            <FaWhatsapp size={20} />
           </Link>
         </Flex>
       </Flex>
@@ -89,7 +115,7 @@ const LandingHeader = () => {
             <MenuItems to="/">Home</MenuItems>
             <MenuItems to="/">Sport</MenuItems>
             <MenuItems to="/">News</MenuItems>
-            <MenuItems to="/">Play Now</MenuItems>
+            <MenuItems to="https://surebet.co.ke" isExternal>Play Now</MenuItems>
             <MenuItems to="/">How To</MenuItems>
           </Flex>
 
@@ -117,7 +143,7 @@ const LandingHeader = () => {
             <MenuItems to="/" onClick={handleToggle}>
               News
             </MenuItems>
-            <MenuItems to="/" onClick={handleToggle}>
+            <MenuItems to="https://surebet.co.ke" isExternal onClick={handleToggle}>
               Play Now
             </MenuItems>
             <MenuItems to="/" onClick={handleToggle}>

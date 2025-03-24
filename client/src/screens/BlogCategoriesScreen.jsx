@@ -21,13 +21,13 @@ import {
   ModalCloseButton,
   FormControl,
   FormLabel,
-  Textarea,
   useDisclosure,
   Collapse,
 } from '@chakra-ui/react';
 import { IoAdd, IoTrashBinSharp, IoPencilSharp, IoArrowBack } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -65,6 +65,30 @@ const BlogCategoriesScreen = () => {
 
   const categoryDelete = useSelector((state) => state.categoryDelete);
   const { loading: loadingDelete, error: errorDelete, success: successDelete } = categoryDelete;
+
+  // Function to create plain text preview
+  const createTextPreview = (html) => {
+    if (!html) return 'No content available';
+    
+    // Remove HTML tags and limit to 150 characters
+    const plainText = html.replace(/<[^>]*>/g, '');
+    return plainText.length > 150 
+      ? plainText.substring(0, 150) + '...' 
+      : plainText;
+  };
+
+  // Function to sanitize HTML for full display
+  const createMarkup = (html) => {
+    return {
+      __html: DOMPurify.sanitize(html, {
+        ALLOWED_TAGS: [
+          'p', 'strong', 'em', 'u', 's', 'a', 'ul', 'ol', 'li', 
+          'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'br', 'span'
+        ],
+        ALLOWED_ATTR: ['href', 'target', 'rel', 'style', 'class']
+      })
+    };
+  };
 
   useEffect(() => {
     if (!userInfo || !userInfo.isAdmin) {
@@ -147,10 +171,34 @@ const BlogCategoriesScreen = () => {
           <Text mb="2">{blog?.author}</Text>
           <Text fontWeight="bold">Article:</Text>
           <Collapse in={showFullArticle} animateOpacity>
-            <Text mb="2">{blog?.article}</Text>
+            <Box 
+              className="ql-editor"
+              dangerouslySetInnerHTML={createMarkup(blog?.article)}
+              sx={{
+                '& p': { mb: 4, lineHeight: '1.6' },
+                '& h1, & h2, & h3, & h4, & h5, & h6': { 
+                  mt: 6, 
+                  mb: 4,
+                  fontWeight: 'bold',
+                  lineHeight: '1.3'
+                },
+                '& ul, & ol': { pl: 6, mb: 4 },
+                '& li': { mb: 2 },
+                '& a': { 
+                  color: 'blue.500', 
+                  textDecoration: 'underline',
+                  '&:hover': { textDecoration: 'none' }
+                }
+              }}
+            />
           </Collapse>
           {!showFullArticle && (
-            <Text mb="2">{blog?.article?.substring(0, 100)}...</Text>
+            <Text 
+              mb="2"
+              dangerouslySetInnerHTML={{ 
+                __html: createTextPreview(blog?.article) 
+              }}
+            />
           )}
           <Button
             mt="2"
