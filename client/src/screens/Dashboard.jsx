@@ -32,7 +32,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Box p="4" bg="white" borderRadius="lg" boxShadow="md" m={2} width='100%'>
+      <Box p="4" bg="white" borderRadius="lg" boxShadow="md" m={4} width='100%'>
         {/* Header */}
         <Flex justifyContent="space-between" alignItems="center" mb={4}>
           <Text fontSize="xl" fontWeight="bold">

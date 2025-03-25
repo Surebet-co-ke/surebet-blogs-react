@@ -12,7 +12,6 @@ import {
   useColorModeValue,
   Badge,
 } from '@chakra-ui/react';
-import DOMPurify from 'dompurify';
 
 import { listBlogs } from '../actions/blogActions';
 import Loader from '../components/Loader';
@@ -136,7 +135,7 @@ const AllBlogsScreen = () => {
                       e.stopPropagation();
                       handleBlogClick(blog.id);
                     }}
-                    colorScheme="brandBlue"
+                    colorScheme="gray"
                   >
                     Read More
                   </Button>
